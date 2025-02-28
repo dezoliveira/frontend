@@ -22,7 +22,9 @@ export default function Page() {
         password: password
       })
 
-      console.log(response.data)
+      if (!response.data.token) {
+        return
+      }
 
     } catch(err) {
       console.log(err)
