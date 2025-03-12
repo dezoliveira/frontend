@@ -1,5 +1,7 @@
 "use client"
 import { createContext, ReactNode, useState } from 'react'
+import { api } from '@/services/api'
+import { getCookieClient } from '@/lib/cookieClient'
 
 interface OrderItemProps {
   id: string,
@@ -40,8 +42,22 @@ export function OrderProvider({ children }: OrderProviderProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [order, setOrder] = useState<OrderItemProps[]>([])
 
-  function onRequestOpen(order_id: string) {
-    console.log(order_id)
+  async function onRequestOpen(order_id: string) {
+
+    const token = await getCookieClient()
+    
+    const response = await api.get("/order/detail", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      
+      params: {
+        order_id: order_id
+      }
+    })
+
+    console.log(response.data)
+
     setIsOpen(true)
   }
 
