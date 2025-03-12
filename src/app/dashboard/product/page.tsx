@@ -1,4 +1,4 @@
-import { Form } from "./form";
+import { Form } from "./components/form";
 import { api } from '@/services/api'
 import { getCookieServer } from '@/lib/cookieServer'
 

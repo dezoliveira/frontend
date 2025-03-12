@@ -7,6 +7,8 @@ import Image from 'next/image'
 import { Button } from '@/app/dashboard/components/button'
 import { api } from '@/services/api'
 import { getCookieClient } from '@/lib/cookieClient'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 interface CategoryProps {
   id: string,
@@ -18,6 +20,7 @@ interface Props {
 }
 
 export function Form({ categories }: Props) {
+  const router = useRouter()
   const [image, setImage] = useState<File>()
   const [previewImage, setPreviewImage] = useState("")
 
@@ -29,6 +32,7 @@ export function Form({ categories }: Props) {
     const description = formData.get("description")
 
     if (!name || !categoryIndex || !price || !description || !image) {
+      toast.warning("Preencha todos os campos!")
       return
     }
 
@@ -49,9 +53,11 @@ export function Form({ categories }: Props) {
     })
     .catch((err) => {
       console.log(err)
+      toast.error("Falha ao cadastrar o produto!")
     })
 
-    console.log("CADASTRADO COM SUCESSO!")
+    toast.success("Produto cadastrado com sucesso!")
+    router.push("/dahsboard")
     setPreviewImage("")
 
   }
@@ -61,7 +67,7 @@ export function Form({ categories }: Props) {
       const image = e.target.files[0]
 
       if (image.type !== "image/jpeg" && image.type !== "image/png") {
-        console.log('FORMATO DE IMAGEM INVÁLIDO!!!')
+        toast.warning("Formato de imagem inválido!")
         return
       }
 
@@ -85,7 +91,6 @@ export function Form({ categories }: Props) {
           <input
             type="file"
             accept="image/png, image/jepg"
-            required
             onChange={handleFile}
           />
 
@@ -113,7 +118,6 @@ export function Form({ categories }: Props) {
           type="text"
           name="name"
           placeholder="Digite o nome do produto..."
-          required
           className={styles.input}
         />
 
@@ -121,14 +125,12 @@ export function Form({ categories }: Props) {
           type="text"
           name="price"
           placeholder="Digite o preço do produto..."
-          required
           className={styles.input}
         />
 
         <textarea
           className={styles.input}
           placeholder="Digite a descrição do produto..."
-          required
           name="description"
         >
 
