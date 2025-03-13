@@ -57,7 +57,7 @@ export function Form({ categories }: Props) {
     })
 
     toast.success("Produto cadastrado com sucesso!")
-    router.push("/dahsboard")
+    router.push("/dashboard")
     setPreviewImage("")
 
   }
